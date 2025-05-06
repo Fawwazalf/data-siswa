@@ -11,6 +11,9 @@
     </head>
     <body class="container py-4">
         <div class="mb-3">
+        <a href="{{ route('logout') }}" class="btn btn-danger"
+                >Logout</a
+            >
             <a href="{{ route('siswas.create') }}" class="btn btn-primary"
                 >Add Siswa</a
             >
