@@ -40,6 +40,10 @@
                 Registrasi
                 </a> 
                     </p>
+                    <p class="text-center mt-3 text-muted"> <a href="forgot-password">
+                Lupa Sandi
+                </a> 
+                    </p>
             </div>
         </div>
     </div>
