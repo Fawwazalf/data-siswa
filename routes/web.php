@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HobbyController;
 use App\Http\Controllers\HomeController;
@@ -7,13 +6,17 @@ use App\Http\Controllers\NISNController;
 use App\Http\Controllers\PhoneNumberController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\SocialiteController;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
@@ -73,3 +76,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('phone_numbers', PhoneNumberController::class);
     Route::resource('hobbies', HobbyController::class);
 });
+
+
+Route::get('/auth/{provider}', [SocialiteController::class, 'redirect'])->name('login.provider');
+
+
+Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback']);

@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Edit</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-        />
-    </head>
-    <body class="container py-5">
-        <a href="{{ url('/') }}" class="btn btn-secondary mb-3">Back</a>
+
+@extends('layouts.app')
+
+
+@section('section')
+
 
         <div class="card shadow p-4">
             <h2 class="mb-4">Edit</h2>
@@ -53,31 +46,95 @@
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="mb-3 input-area">
+                    <label class="form-label">Phone Numbers</label>
+                    <div class="mb-3 input-area">
+                     
+                        <div class="input-group-hp mb-2 w-full flex">
+                            <input type="text" id="new-phone-number" class="form-control" placeholder="Enter phone number">
+                            <button type="button" class="btn btn-success" id="add-phone-number">+</button>
+                        </div>
+                    
+                  
+                        <div id="phone-numbers-wrapper">
+                            @forelse(old('phone_numbers', $siswa->phone_numbers->pluck('phone_number')->toArray()) as $phone)
+                            <div class="input-group-hp mb-2 w-full flex">
+                                    <input type="text" name="phone_numbers[]" class="form-control" value="{{ $phone }}" placeholder="Enter phone number" required>
+                                    <button type="button" class="btn btn-danger remove-phone-number">x</button>
+                                </div>
+                            @empty
+                               
+                            @endforelse
+                        </div>
+                    
+                       
+                    </div>
+                    
+                    @error('phone_numbers')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
                 
-                <div class="mb-3">
-        <label class="form-label">Hobi</label><br>
+                <div class="mb-3 checkbox-area">
+                    <label class="form-label block mb-2">Hobi</label>
         @foreach($all_hobbies as $hobby)
-            <div class="form-check">
+        <label class="inline-flex items-center cursor-pointer mb-2 mr-4">
                 <input
-                    class="form-check-input"
-                    type="checkbox"
+                     type="checkbox"
+                            class="hidden"
                     name="hobby_ids[]"
                     value="{{ $hobby->id }}"
                     id="hobby_{{ $hobby->id }}"
                     {{ in_array($hobby->id, $siswa_hobbies->hobbies->pluck('id')->toArray()) ? 'checked' : '' }}
                 >
-                <label class="form-check-label" for="hobby_{{ $hobby->id }}">
+                <span class="h-4 w-4 border flex-none border-slate-100 dark:border-slate-800 rounded inline-flex ltr:mr-3 rtl:ml-3 relative transition-all duration-150 bg-slate-100 dark:bg-slate-900">
+                    <img src="{{ asset('assets/images/icon/ck-white.svg') }}" alt="" class="h-[10px] w-[10px] block m-auto opacity-0">
+                </span>
+                <span class="text-slate-500 dark:text-slate-400 text-sm leading-6">
                     {{ $hobby->hobby }}
-                </label>
-            </div>
+                </span>
+            </label>
         @endforeach
     </div>
                 
 
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit"class="bg-white hover:bg-opacity-80 text-slate-900 text-sm font-Inter rounded-md w-max block py-2 font-medium px-4">Update</button>
             </form>
         </div>
+        @endsection
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+              @section('script')  
+           document.addEventListener('DOMContentLoaded', function () {
+    const addBtn = document.getElementById('add-phone-number');
+    const newInput = document.getElementById('new-phone-number');
+    const wrapper = document.getElementById('phone-numbers-wrapper');
+
+    addBtn.addEventListener('click', function () {
+        const value = newInput.value.trim();
+        if (!value) return;
+
+        const newGroup = document.createElement('div');
+        newGroup.className = 'input-group-hp';
+        newGroup.innerHTML = `
+            <input type="text" name="phone_numbers[]" class="form-control" value="${value}" placeholder="Enter phone number" required>
+            <button type="button" class="btn btn-danger remove-phone-number">x</button>
+        `;
+
+        wrapper.appendChild(newGroup);
+        newInput.value = '';
+    });
+
+    wrapper.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-phone-number')) {
+            e.target.parentElement.remove();
+        }
+    });
+});
+@endsection
+
+            </script>
+            
     </body>
 </html>

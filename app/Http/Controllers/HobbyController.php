@@ -10,7 +10,9 @@ class HobbyController extends Controller
 {
     public function index()
     {
-       return redirect('/');
+        $hobbies = Hobby::with('siswas')->paginate(10, ['*'], 'hobbies_page');
+    
+       return view('hobbies.index', compact('hobbies'));
     }
 
     public function create()
@@ -21,16 +23,13 @@ class HobbyController extends Controller
     public function store(Request $request)
     {
         
-            // Validasi input
             $validated = $request->validate([
                 'hobby' => 'required|string|max:255',
-                'nama' => 'required|string|max:255', 
+                 
             ]);
     
             
-            $siswa = Siswa::firstOrCreate([
-                'nama' => $validated['nama'], 
-            ]);
+         
     
             $hobby = Hobby::firstOrCreate([
                 'hobby' => $validated['hobby'],
@@ -38,19 +37,18 @@ class HobbyController extends Controller
     
            
        
-            $siswa->hobbies()->syncWithoutDetaching($hobby->id);
+           
 
     
           
-            return redirect('/')->with('message', 'Siswa dan Hobby berhasil ditambahkan.');
+            return redirect('/hobbies')->with('message', 'Siswa dan Hobby berhasil ditambahkan.');
         
     }
 
     public function edit(string $id)
     { 
         $hobby = Hobby::with('siswas')->findOrFail($id);
-        $siswas = $hobby->siswa;
-        $all_siswas = Siswa::all();
+      
         return view('hobbies.edit', compact('siswas', 'all_siswas','hobby'));
     }
 
@@ -60,17 +58,16 @@ class HobbyController extends Controller
 
     $validated = $request->validate([
         'hobby' => 'required|string|max:255|unique:hobbies,hobby,' . $hobby->id,
-        'siswa_ids' => 'array',
-        'siswa_ids.*' => 'exists:siswas,id',
+       
     ]);
 
     $hobby->update([
         'hobby' => $validated['hobby']
     ]);
 
-    $hobby->siswas()->sync($request->siswa_ids ?? []);
 
-    return redirect('/')->with('message', 'Siswa dan Hobby berhasil diperbarui.');
+
+    return redirect('/hobbies')->with('message', 'Siswa dan Hobby berhasil diperbarui.');
 }
 
 

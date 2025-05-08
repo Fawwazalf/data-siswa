@@ -11,8 +11,8 @@ class PhoneNumberController extends Controller
     
     public function index()
     {
-       
-        return redirect('/');
+        $phone_numbers = PhoneNumber::with('siswa')->paginate(10);
+        return view('phone_numbers.index', compact('phone_numbers'));
     }
 
     public function create()
@@ -43,7 +43,7 @@ class PhoneNumberController extends Controller
             'siswa_id' => $siswa->id,
         ]);
     
-        return redirect('/')->with('message', ' berhasil ditambahkan.');
+        return redirect('/phone_numbers')->with('message', ' berhasil ditambahkan.');
     }
     
 
@@ -82,7 +82,7 @@ class PhoneNumberController extends Controller
     ]);
 
 
-    return redirect('/')->with('message', 'Siswa dan Phone Number berhasil diperbarui.');
+    return redirect('/phone_numbers')->with('message', 'Siswa dan Phone Number berhasil diperbarui.');
 }
 
 
@@ -91,6 +91,6 @@ class PhoneNumberController extends Controller
     {
         $phone_number = PhoneNumber::findOrFail($id);
         $phone_number->delete();
-        return redirect('/')->with('message', 'Phone Number berhasil dihapus');
+        return redirect('/phone_numbers')->with('message', 'Phone Number berhasil dihapus');
     }
 }

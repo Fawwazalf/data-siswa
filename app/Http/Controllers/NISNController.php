@@ -13,7 +13,8 @@ class NISNController extends Controller
      */
     public function index()
     {
-        return redirect('/');
+        $nisns = NISN::with('siswa')->paginate(10);
+        return view('nisns.index', compact('nisns'));
     }
 
     public function create()
@@ -41,7 +42,7 @@ class NISNController extends Controller
     ]);
 
 
-    return redirect('/')->with('message', 'Siswa dan NISN berhasil ditambahkan.');
+    return redirect('/nisns')->with('message', 'Siswa dan NISN berhasil ditambahkan.');
 }
 
     public function show(string $nisn)
@@ -85,7 +86,7 @@ class NISNController extends Controller
         ]);
     }
 
-    return redirect('/')->with('message', 'Siswa dan NISN berhasil diperbarui.');
+    return redirect('/nisns')->with('message', 'Siswa dan NISN berhasil diperbarui.');
 }
 
 
@@ -94,6 +95,6 @@ class NISNController extends Controller
     {
         $nisn = NISN::findOrFail($id);
         $nisn->delete();
-        return redirect('/')->with('message', 'NISN berhasil dihapus');
+        return redirect('/nisns')->with('message', 'NISN berhasil dihapus');
     }
 }
