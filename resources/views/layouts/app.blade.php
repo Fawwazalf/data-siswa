@@ -16,6 +16,11 @@
   <link rel="stylesheet" href="/assets/css/app.css">
   <!-- End : Theme CSS-->
   <script src="/assets/js/settings.js" sync></script>
+  <style>
+    .text-danger {
+      color: #dc3545;
+    }
+  </style>
 </head>
 
 <body class=" font-inter dashcode-app" id="body_class">
@@ -1697,7 +1702,9 @@
                     <div class="lg:h-8 lg:w-8 h-7 w-7 rounded-full flex-1 ltr:mr-[10px] rtl:ml-[10px]">
                       <img src="/assets/images/all-img/user.png" alt="user" class="block w-full h-full object-cover rounded-full">
                     </div>
-                    <span class="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">{{ auth()->user()->name }} </span>
+                    <span class="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">@auth
+    {{ auth()->user()->name }}
+@endauth </span>
                     <svg class="w-[16px] h-[16px] dark:text-white hidden lg:inline-block text-base inline-block ml-[10px] rtl:mr-[10px]" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
@@ -1749,7 +1756,7 @@
                         </a>
                       </li>
                       <li>
-                        <a href="{{ route('logout') }}" class="block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white font-inter text-sm text-slate-600
+                        <a href="{{route('logout')}}" class="block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white font-inter text-sm text-slate-600
             dark:text-white font-normal">
                           <iconify-icon icon="heroicons-outline:login" class="relative top-[2px] text-lg ltr:mr-1 rtl:ml-1"></iconify-icon>
                           <span class="font-Inter">Logout</span>

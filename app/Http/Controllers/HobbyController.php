@@ -71,8 +71,8 @@ class HobbyController extends Controller
 }
 
 
-    public function destroy(Hobby $hobby)
-    {
+    public function destroy(string $id)
+    {$hobby = Hobby::findOrFail($id);
         $hobby->delete();
 
         return redirect()->route('hobbies.index')->with('success', 'Hobi berhasil dihapus.');

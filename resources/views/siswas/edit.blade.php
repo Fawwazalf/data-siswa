@@ -6,7 +6,7 @@
 
 
         <div class="card shadow p-4">
-            <h2 class="mb-4">Edit</h2>
+            <h2 class="mb-4">Edit Siswa</h2>
 
             @if(session('message'))
             <div class="alert alert-success">{{ session("message") }}</div>
@@ -27,9 +27,12 @@
                         placeholder="Enter siswa nama"
                         value="{{ old('nama', $siswa->nama) }}"
                     />
-                    @error('nama')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
+                   @isset($errors)
+    @error('nama')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+@endisset
+
                 </div>
 
                 <div class="mb-3">
@@ -42,9 +45,12 @@
                         placeholder="Enter nisn"
                         value="{{ old('nisn', $siswa->nisn->nisn ?? '') }}"
                     />
-                    @error('nisn')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
+                  @isset($errors)
+    @error('nisn')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+@endisset
+
                 </div>
                 <div class="mb-3 input-area">
                     <label class="form-label">Phone Numbers</label>
@@ -70,9 +76,12 @@
                        
                     </div>
                     
-                    @error('phone_numbers')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
+                   @isset($errors)
+    @error('phone_numbers')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+@endisset
+
                 </div>
                 
                 <div class="mb-3 checkbox-area">

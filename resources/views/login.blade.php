@@ -115,8 +115,8 @@
                   </a>
                 </li>
                 <li class="flex-1">
-                  <a href="#" class="inline-flex h-10 w-10 bg-[#0A63BC] text-white text-2xl flex-col items-center justify-center rounded-full">
-                    <img src="assets/images/icon/in.svg" alt="">
+                  <a  href={{ route('login.provider', ['provider' => 'github']) }} class="inline-flex h-10 w-10 bg-white text-white text-2xl flex-col items-center justify-center rounded-full">
+                    <img src="assets/images/icon/github.svg" alt="">
                   </a>
                 </li>
                 <li class="flex-1">

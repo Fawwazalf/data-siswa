@@ -144,9 +144,11 @@
                                                   <div class="mb-3">
                                                       <label for="hobby" class="form-label">Hobby</label>
                                                       <input type="text" class="form-control" name="hobby" id="hobby" placeholder="Enter hobby" value="{{ old('hobby') }}" />
-                                                      @error('hobby')
-                                                      <div class="text-danger">{{ $message }}</div>
-                                                      @enderror
+                                                    @isset($errors)
+                                                          @error('hobby')
+                                                              <div class="text-danger">{{ $message }}</div>
+                                                          @enderror
+                                                      @endisset
                                                   </div>
                           
                           

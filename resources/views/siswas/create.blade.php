@@ -17,18 +17,24 @@
             <div class="mb-3 input-area">
                 <label for="nama" class="form-label">Name</label>
                 <input type="text" class="form-control" name="nama" id="nama" placeholder="Enter nama" value="{{ old('nama') }}" />
-                @error('nama')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
+                @isset($errors)
+    @error('nama')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+@endisset
+
             </div>
 
             <div class="mb-3 input-area">
                 <label for="nisn" class="form-label">NISN</label>
                 <input type="number" min="0" step="1" class="form-control" name="nisn" id="nisn" placeholder="Enter nisn" value="{{ old('nisn') }}" />
 
-                @error('nisn')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
+               @isset($errors)
+    @error('nisn')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+@endisset
+
             </div>
 
             {{-- <div class="mb-3 input-area">
@@ -51,14 +57,31 @@
             <div class="mb-3 input-area">
                 <label class="form-label">Phone Numbers</label>
                 <div id="phone-numbers-wrapper">
-                    <div class="input-group-hp mb-2 w-full flex">
-                        <input type="text" name="phone_numbers[]" class="form-control " placeholder="Enter phone number">
-                        <button type="button" class="btn btn-success add-phone-number">+</button>
-                    </div>
-                </div>
-                @error('phone_numbers')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
+    @php $oldPhones = old('phone_numbers', []); @endphp
+    @if (count($oldPhones))
+        @foreach ($oldPhones as $i => $phone)
+            <div class="input-group-hp mb-2 w-full flex">
+                <input type="text" name="phone_numbers[]" class="form-control" value="{{ $phone }}" placeholder="Enter phone number">
+                @if ($loop->first)
+                    <button type="button" class="btn btn-success add-phone-number">+</button>
+                @else
+                    <button type="button" class="btn btn-danger remove-phone-number">×</button>
+                @endif
+            </div>
+        @endforeach
+    @else
+        <div class="input-group-hp mb-2 w-full flex">
+            <input type="text" name="phone_numbers[]" class="form-control" placeholder="Enter phone number">
+            <button type="button" class="btn btn-success add-phone-number">+</button>
+        </div>
+    @endif
+</div>
+
+                @isset($errors)
+                    @error('phone_numbers')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                @endisset
             </div>
             
             <div class="mb-3 checkbox-area">
@@ -81,9 +104,12 @@
                     </label>
                 @endforeach
             
-                @error('hobby_ids')
-                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
-                @enderror
+               @isset($errors)
+    @error('hobby_ids')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+@endisset
+
             </div>
             
 
