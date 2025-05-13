@@ -3,9 +3,11 @@
       <header class=" card-header noborder">
         <h4 class="card-title ">Hobby Table
         </h4>
+        @can(abilities: 'create-hobby' )
         <button data-bs-toggle="modal" data-bs-target="#basic_modal" class="bg-white hover:bg-opacity-80 text-slate-900 text-sm font-Inter rounded-md w-max block py-2 font-medium px-4">
-          Add Hobby
-      </button>
+            Add Hobby
+        </button>
+          @endcan
       </header>
       <div class="card-body px-6 pb-6">
         <div class="overflow-x-auto -mx-6 dashcode-data-table">
@@ -32,10 +34,13 @@
                                         
         
                                         
-        
+           @can('update-hobby')
+    @can('delete-hobby')
                                           <th scope="col" class=" table-th ">
                                             Action
                                           </th>
+        @endcan
+        @endcan
         
                                         </tr>
                                       </thead>
@@ -63,7 +68,8 @@
                                           @endif
                                           </td>
                                         
-                                        
+@can('update-hobby')
+    @can('delete-hobby')
                                           <td class="table-td ">
                                             <div>
                                               <div class="relative">
@@ -103,6 +109,8 @@
                                               </div>
                                             </div>
                                           </td>
+                                          @endcan
+                                          @endcan
                                         </tr>
                                         @endforeach
                                       </tbody>

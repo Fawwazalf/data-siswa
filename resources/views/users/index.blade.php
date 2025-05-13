@@ -9,17 +9,16 @@
 
   @endcan
   @can('read-hobby')
-
     
   <li>
-    <a href="{{ route('hobbies.index') }}" class="active">Hobby
+    <a href="{{ route('hobbies.index') }}">Hobby
     </a>
   </li>
   @endcan
 @can('read-user')
   
 <li>
-    <a href="{{ route(name: 'users.index') }}" >User</a>
+    <a href="{{ route(name: 'users.index') }}" class="active" >User</a>
   </li>
 
   @endcan
@@ -29,11 +28,10 @@
     </a>
   </li>
   @endcan
-
 @endsection
 
 @section('section')
-@include('hobbies._table')
+@include('users._table')
                                   @endsection
 
                                   @section('breadcrumb')

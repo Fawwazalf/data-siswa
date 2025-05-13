@@ -9,6 +9,7 @@ const todoSidebarMenu = document.querySelector(".open-sidebar");
 const todooverlay = document.querySelector(".todo-todooverlay");
 
 if (todoNoResult) {
+  
   todoNoResult.style.display = "none";
 }
 // mobile sidebar

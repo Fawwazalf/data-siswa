@@ -7,13 +7,23 @@ use App\Models\NISN;
 use App\Models\PhoneNumber;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
-
+use Illuminate\Routing\Controllers\Middleware;
 
 class SiswaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $this->middleware('permission:create-siswa')->only(['create', 'store']);
+        $this->middleware('permission:read-siswa')->only(['index', 'show']);
+        $this->middleware('permission:update-siswa')->only(['edit', 'update']);
+        $this->middleware('permission:delete-siswa')->only(['destroy']);
+    }
+
+
     public function index()
 {
     $siswas = Siswa::with(relations: 'nisn')->paginate(10, ['*'], 'siswas_page');

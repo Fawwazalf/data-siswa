@@ -16,15 +16,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => Str::random(10),
-            'email' => Str::random(10).'@example.com',
+        $superAdmin = User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@gmail.com',
             'password' => Hash::make('password'),
         ]);
-
-        User::factory()
-        ->count(50)
-        ->create();
-
+        $admin = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user = User::create([
+            'name' => 'User',
+            'email' => 'user@gmail.com',
+            'password' => Hash::make('password'),
+        ]);
+        
+        $superAdmin->assignRole('Super Admin');
+        $admin->assignRole('Admin');
+        $user->assignRole('User');
+        
     }
 }

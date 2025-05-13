@@ -34,7 +34,10 @@ class SocialiteController extends Controller
                 'provider_id' => $socialUser->getId(),
             ]);
         }
-    
+
+      
+        $user->assignRole('User'); 
+
         Auth::login($user);
         
     

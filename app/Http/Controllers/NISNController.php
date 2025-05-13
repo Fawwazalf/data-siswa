@@ -11,6 +11,7 @@ class NISNController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         $nisns = NISN::with('siswa')->paginate(10);

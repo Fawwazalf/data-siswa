@@ -5,8 +5,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NISNController;
 use App\Http\Controllers\PhoneNumberController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
@@ -69,12 +71,14 @@ Route::post('/reset-password', function (Request $request) {
         : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:Super Admin|Admin|User'])->group(function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::resource('siswas', SiswaController::class);
     Route::resource('nisns', NISNController::class);
     Route::resource('phone_numbers', PhoneNumberController::class);
     Route::resource('hobbies', HobbyController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
 });
 
 

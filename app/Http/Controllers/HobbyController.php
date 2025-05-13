@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class HobbyController extends Controller
 {
+
+     public function __construct()
+    {
+        $this->middleware('permission:create-hobby')->only(['create', 'store']);
+        $this->middleware('permission:read-hobby')->only(['index', 'show']);
+        $this->middleware('permission:update-hobby')->only(['edit', 'update']);
+        $this->middleware('permission:delete-hobby')->only(['destroy']);
+    }
     public function index()
     {
         $hobbies = Hobby::with('siswas')->paginate(10, ['*'], 'hobbies_page');
