@@ -19,11 +19,23 @@ class RolePermissionSeeder extends Seeder
         $user = Role::firstOrCreate(['name' => 'User']);
 
         $permissions = [
-            'create-hobby', 'read-hobby', 'update-hobby', 'delete-hobby',
-            'create-siswa', 'read-siswa', 'update-siswa', 'delete-siswa',
-            'create-user', 'read-user', 'update-user', 'delete-user',
-            'create-role', 'read-role', 'update-role', 'delete-role',
-            
+            'create-hobby',
+            'read-hobby',
+            'update-hobby',
+            'delete-hobby',
+            'create-siswa',
+            'read-siswa',
+            'update-siswa',
+            'delete-siswa',
+            'create-user',
+            'read-user',
+            'update-user',
+            'delete-user',
+            'create-role',
+            'read-role',
+            'update-role',
+            'delete-role',
+
         ];
 
         foreach ($permissions as $permission) {
@@ -42,6 +54,5 @@ class RolePermissionSeeder extends Seeder
             'read-hobby',
             'read-siswa',
         ]);
-        
     }
 }

@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nisn')->unique();
             $table->timestamps();
-            
+
             $table->foreignId('siswa_id')->unique()->constrained('siswas')->onDelete('cascade');
         });
-        
     }
 
     /**

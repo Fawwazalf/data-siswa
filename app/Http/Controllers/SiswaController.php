@@ -25,10 +25,10 @@ class SiswaController extends Controller
 
 
     public function index()
-{
-    $siswas = Siswa::with(relations: 'nisn')->paginate(10, ['*'], 'siswas_page');
-    return view('siswas.index', compact('siswas'));
-}
+    {
+        $siswas = Siswa::with(relations: 'nisn')->paginate(10, ['*'], 'siswas_page');
+        return view('siswas.index', compact('siswas'));
+    }
 
 
 
@@ -50,13 +50,13 @@ class SiswaController extends Controller
             'hobby_ids' => 'nullable|array',
             'hobby_ids.*' => 'required|integer|distinct|exists:hobbies,id',
         ]);
-    
-       
+
+
         $siswa = Siswa::create([
             'nama' => $validated['nama'],
         ]);
-    
-       
+
+
         NISN::create([
             'siswa_id' => $siswa->id,
             'nisn' => $validated['nisn'],
@@ -64,7 +64,7 @@ class SiswaController extends Controller
 
         if (!empty($validated['phone_numbers'])) {
             foreach ($validated['phone_numbers'] as $phone) {
-                if (!empty($phone)) { 
+                if (!empty($phone)) {
                     PhoneNumber::create([
                         'siswa_id' => $siswa->id,
                         'phone_number' => $phone,
@@ -72,96 +72,96 @@ class SiswaController extends Controller
                 }
             }
         }
-        
-        
-    
-        
+
+
+
+
         if (!empty($validated['hobby_ids'])) {
             $siswa->hobbies()->sync($validated['hobby_ids']);
         }
-    
+
         return redirect('/siswas')->with('message', 'Siswa, NISN, Phone Number, dan Hobby berhasil ditambahkan.');
     }
-    
-    
+
+
     /**
      * Update the specified resource in storage.
      */
 
-     public function edit(string $id)
-     {
+    public function edit(string $id)
+    {
         $siswa = Siswa::with('nisn', 'phone_numbers', 'hobbies')->findOrFail($id);
         $all_hobbies = Hobby::all();
         $siswa_hobbies = Siswa::with('hobbies')->findOrFail($id);
         $siswa_phone_numbers = Siswa::with('phone_numbers')->findOrFail($id);
 
-         return view('siswas.edit', compact('siswa', 'all_hobbies', 'siswa_hobbies', 'siswa_phone_numbers'));
-     }
+        return view('siswas.edit', compact('siswa', 'all_hobbies', 'siswa_hobbies', 'siswa_phone_numbers'));
+    }
 
-     
-     public function update(Request $request, string $id)
-     {
-         $siswa = Siswa::with(['nisn', 'phone_numbers'])->findOrFail($id);
-     
-   
-         $request->merge([
-             'phone_numbers' => collect($request->phone_numbers)->filter()->values()->all()
-         ]);
-     
-         $validated = $request->validate([
-             'nama' => 'required|max:255|unique:siswas,nama,' . $siswa->id,
-             'nisn' => 'required|max:255|unique:nisns,nisn,' . ($siswa->nisn->id ?? 'NULL'),
-             'phone_numbers' => 'nullable|array',
-             'phone_numbers.*' => 'nullable|string|max:20|distinct',
-             'hobby_ids' => 'array',
-             'hobby_ids.*' => 'exists:hobbies,id',
-         ]);
-     
-        
-         $nomorExist = PhoneNumber::whereNotIn('id', $siswa->phone_numbers->pluck('id'))
-             ->pluck('phone_number')
-             ->toArray();
-     
-         
-         foreach ($validated['phone_numbers'] ?? [] as $nomor) {
-             if (in_array($nomor, $nomorExist)) {
-                 return back()->withErrors(['phone_numbers' => "Nomor telepon $nomor sudah digunakan oleh siswa lain."])->withInput();
-             }
-         }
-     
-        
-         $siswa->hobbies()->sync($validated['hobby_ids'] ?? []);
-     
-      
-         $siswa->update([
-             'nama' => $validated['nama'],
-         ]);
-     
-         if ($siswa->nisn) {
-             $siswa->nisn->update([
-                 'nisn' => $validated['nisn'],
-             ]);
-         } else {
-             NISN::create([
-                 'siswa_id' => $siswa->id,
-                 'nisn' => $validated['nisn'],
-             ]);
-         }
-     
-     
-         $siswa->phone_numbers()->delete();
-     
-         
-         foreach ($validated['phone_numbers'] ?? [] as $phone) {
-             PhoneNumber::create([
-                 'siswa_id' => $siswa->id,
-                 'phone_number' => $phone,
-             ]);
-         }
-     
-         return redirect('/siswas')->with('message', 'Siswa dan NISN berhasil diperbarui.');
-     }
-     
+
+    public function update(Request $request, string $id)
+    {
+        $siswa = Siswa::with(['nisn', 'phone_numbers'])->findOrFail($id);
+
+
+        $request->merge([
+            'phone_numbers' => collect($request->phone_numbers)->filter()->values()->all()
+        ]);
+
+        $validated = $request->validate([
+            'nama' => 'required|max:255|unique:siswas,nama,' . $siswa->id,
+            'nisn' => 'required|max:255|unique:nisns,nisn,' . ($siswa->nisn->id ?? 'NULL'),
+            'phone_numbers' => 'nullable|array',
+            'phone_numbers.*' => 'nullable|string|max:20|distinct',
+            'hobby_ids' => 'array',
+            'hobby_ids.*' => 'exists:hobbies,id',
+        ]);
+
+
+        $nomorExist = PhoneNumber::whereNotIn('id', $siswa->phone_numbers->pluck('id'))
+            ->pluck('phone_number')
+            ->toArray();
+
+
+        foreach ($validated['phone_numbers'] ?? [] as $nomor) {
+            if (in_array($nomor, $nomorExist)) {
+                return back()->withErrors(['phone_numbers' => "Nomor telepon $nomor sudah digunakan oleh siswa lain."])->withInput();
+            }
+        }
+
+
+        $siswa->hobbies()->sync($validated['hobby_ids'] ?? []);
+
+
+        $siswa->update([
+            'nama' => $validated['nama'],
+        ]);
+
+        if ($siswa->nisn) {
+            $siswa->nisn->update([
+                'nisn' => $validated['nisn'],
+            ]);
+        } else {
+            NISN::create([
+                'siswa_id' => $siswa->id,
+                'nisn' => $validated['nisn'],
+            ]);
+        }
+
+
+        $siswa->phone_numbers()->delete();
+
+
+        foreach ($validated['phone_numbers'] ?? [] as $phone) {
+            PhoneNumber::create([
+                'siswa_id' => $siswa->id,
+                'phone_number' => $phone,
+            ]);
+        }
+
+        return redirect('/siswas')->with('message', 'Siswa dan NISN berhasil diperbarui.');
+    }
+
 
     public function destroy(string $id)
     {

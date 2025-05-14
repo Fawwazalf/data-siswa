@@ -9,10 +9,10 @@ use Tests\TestCase;
 
 class HobbiesTest extends TestCase
 {
-    
+
     use RefreshDatabase;
 
-        protected function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware();

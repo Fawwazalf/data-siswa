@@ -15,18 +15,21 @@ class UserController extends Controller
         $this->middleware('auth');
         $this->middleware('role:Super Admin');
     }
-    public function index(){
+    public function index()
+    {
         $users = User::with('roles')->paginate(10);
         return view('users.index', compact('users'));
     }
-    
-    public function create(){
-       $roles = Role::all();
-        
+
+    public function create()
+    {
+        $roles = Role::all();
+
         return view('users.create', compact('roles'));
     }
 
-    public function store(){
+    public function store()
+    {
         $validated = request()->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -44,25 +47,27 @@ class UserController extends Controller
         return redirect('/users')->with('message', 'User berhasil ditambahkan.');
     }
 
-    public function edit(string $id){
+    public function edit(string $id)
+    {
         $user = User::with('roles')->findOrFail($id);
         $roles = Role::all();
         return view('users.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, string $id){
+    public function update(Request $request, string $id)
+    {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required|string|exists:roles,name',
         ]);
-        
+
         if ($request->filled('password')) {
             $validated['password'] = Hash::make($validated['password']);
         } else {
             unset($validated['password']);
         }
-        
+
         $user = User::findOrFail($id);
         $user->update([
             'name' => $validated['name'],
@@ -75,9 +80,10 @@ class UserController extends Controller
 
         return redirect('/users')->with('message', 'User berhasil diupdate.');
     }
-    public function destroy(string $id){
+    public function destroy(string $id)
+    {
         $user = User::findOrFail($id);
         $user->delete();
         return redirect('/users')->with('message', 'User berhasil dihapus.');
-    }   
+    }
 }

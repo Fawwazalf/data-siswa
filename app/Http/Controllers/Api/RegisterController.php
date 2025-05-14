@@ -12,7 +12,7 @@ class RegisterController extends Controller
 {
     public function register(Request $request)
     {
-      
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -32,10 +32,10 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-    
+
         return response()->json([
             'message' => 'Registrasi berhasil',
             'user' => $user,
-        ], 201); 
+        ], 201);
     }
 }

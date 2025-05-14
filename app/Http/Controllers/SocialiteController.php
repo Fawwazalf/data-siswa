@@ -18,8 +18,8 @@ class SocialiteController extends Controller
     public function callback($provider)
     {
         $socialUser = Socialite::driver($provider)->user();
-        
-       
+
+
         $user = User::where('email', $socialUser->getEmail())->first();
         if ($user) {
             $user->provider = $provider;
@@ -29,18 +29,18 @@ class SocialiteController extends Controller
             $user = User::create([
                 'name' => $socialUser->getName() ?? $socialUser->getNickname(),
                 'email' => $socialUser->getEmail(),
-                'password' => bcrypt(Str::random(24)), 
+                'password' => bcrypt(Str::random(24)),
                 'provider' => $provider,
                 'provider_id' => $socialUser->getId(),
             ]);
         }
 
-      
-        $user->assignRole('User'); 
+
+        $user->assignRole('User');
 
         Auth::login($user);
-        
-    
+
+
         return redirect('/');
     }
 }

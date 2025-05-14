@@ -17,10 +17,10 @@ class HobbyController extends Controller
     }
 
     public function show($id)
-{
-    $hobby = Hobby::with('siswas')->findOrFail($id);
-    return new HobbyResource(true, 'Detail Data Hobby', $hobby);
-}
+    {
+        $hobby = Hobby::with('siswas')->findOrFail($id);
+        return new HobbyResource(true, 'Detail Data Hobby', $hobby);
+    }
 
 
     public function store(Request $request)

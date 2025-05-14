@@ -22,8 +22,4 @@ class Siswa extends Model
     {
         return $this->belongsToMany(Hobby::class, 'siswa_hobbies', 'siswa_id', 'hobbies_id');
     }
-    
-
 }
-
-

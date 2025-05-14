@@ -25,28 +25,28 @@ class SiswaTest extends TestCase
         $response = $this->get('/siswas');
         $response->assertStatus(200);
     }
-    
-  public function test_user_can_create_a_siswa(): void
-{
-    $hobby1 = Hobby::create(['hobby' => 'Lari']);
-    $hobby2 = Hobby::create(['hobby' => 'Renang']);
 
-    $response = $this->post('/siswas', [
-        'nama' => 'Johan',
-        'nisn' => 123456789,
-        'phone_numbers' => [
-            '1234567890',
-            '0987654321'
-        ],
-        'hobby_ids' => [
-            $hobby1->id,
-            $hobby2->id
-        ],
-    ]);
+    public function test_user_can_create_a_siswa(): void
+    {
+        $hobby1 = Hobby::create(['hobby' => 'Lari']);
+        $hobby2 = Hobby::create(['hobby' => 'Renang']);
 
-    $response->assertRedirect('/siswas');
-    $this->assertDatabaseHas('siswas', ['nama' => 'Johan']);
-}
+        $response = $this->post('/siswas', [
+            'nama' => 'Johan',
+            'nisn' => 123456789,
+            'phone_numbers' => [
+                '1234567890',
+                '0987654321'
+            ],
+            'hobby_ids' => [
+                $hobby1->id,
+                $hobby2->id
+            ],
+        ]);
+
+        $response->assertRedirect('/siswas');
+        $this->assertDatabaseHas('siswas', ['nama' => 'Johan']);
+    }
     public function test_user_can_update_a_siswa(): void
     {
         $siswa = Siswa::create(['nama' => 'Johan']);
@@ -55,10 +55,10 @@ class SiswaTest extends TestCase
             'nama' => 'Fawwaz',
             'nisn' => 12345679,
             'phone_numbers' => [
-              '1234567890',
-               '0987654321'
+                '1234567890',
+                '0987654321'
             ],
-            
+
         ]);
 
         $response->assertRedirect('/siswas');
@@ -77,7 +77,7 @@ class SiswaTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $response = $this->get('/siswas/create');
-        
+
         $response->assertStatus(200);
         $response->assertSee('Create Siswa');
     }

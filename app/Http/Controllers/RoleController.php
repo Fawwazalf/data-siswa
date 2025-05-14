@@ -17,7 +17,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::with('permissions')->paginate(10);
-        return view('roles.index',compact('roles'));
+        return view('roles.index', compact('roles'));
     }
 
     public function create()
@@ -60,8 +60,8 @@ class RoleController extends Controller
         } else {
             $role->syncPermissions([]);
         }
-        
-        return redirect()->route( 'roles.index')->with('message', 'Role updated successfully.');
+
+        return redirect()->route('roles.index')->with('message', 'Role updated successfully.');
     }
 
     public function destroy($id)

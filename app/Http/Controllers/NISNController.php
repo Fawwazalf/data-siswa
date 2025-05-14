@@ -24,27 +24,27 @@ class NISNController extends Controller
     }
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'nama' => 'required|unique:siswas,nama|max:255',
-        'nisn' => 'required|unique:nisns,nisn|max:255',
-    ]);
-
-    
-    $siswa = Siswa::create([
-        'nama' => $validated['nama'],
-        'phone_number' => null
-    ]);
-
-    
-    NISN::create([
-        'siswa_id' => $siswa->id,
-        'nisn' => $validated['nisn'],
-    ]);
+    {
+        $validated = $request->validate([
+            'nama' => 'required|unique:siswas,nama|max:255',
+            'nisn' => 'required|unique:nisns,nisn|max:255',
+        ]);
 
 
-    return redirect('/nisns')->with('message', 'Siswa dan NISN berhasil ditambahkan.');
-}
+        $siswa = Siswa::create([
+            'nama' => $validated['nama'],
+            'phone_number' => null
+        ]);
+
+
+        NISN::create([
+            'siswa_id' => $siswa->id,
+            'nisn' => $validated['nisn'],
+        ]);
+
+
+        return redirect('/nisns')->with('message', 'Siswa dan NISN berhasil ditambahkan.');
+    }
 
     public function show(string $nisn)
     {
@@ -52,43 +52,43 @@ class NISNController extends Controller
     }
 
     public function edit(string $id)
-{
-    $siswa = Siswa::with('nisn')->findOrFail($id);
-    return view('nisns.edit', compact('siswa'));
-}
+    {
+        $siswa = Siswa::with('nisn')->findOrFail($id);
+        return view('nisns.edit', compact('siswa'));
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,string $id)
-{
-    $siswa = Siswa::with('nisn')->findOrFail($id);
+    public function update(Request $request, string $id)
+    {
+        $siswa = Siswa::with('nisn')->findOrFail($id);
 
-    $validated = $request->validate([
-        'nama' => 'required|max:255|unique:siswas,nama,' . $siswa->id,
-        'nisn' => 'required|max:255|unique:nisns,nisn,' . ($siswa->nisn->id ?? 'NULL'),
-    ]);
-
-    
-    $siswa->update([
-        'nama' => $validated['nama'],
-    ]);
-
-   
-    if ($siswa->nisn) {
-        $siswa->nisn->update([
-            'nisn' => $validated['nisn'],
+        $validated = $request->validate([
+            'nama' => 'required|max:255|unique:siswas,nama,' . $siswa->id,
+            'nisn' => 'required|max:255|unique:nisns,nisn,' . ($siswa->nisn->id ?? 'NULL'),
         ]);
-    } else {
-      
-        NISN::create([
-            'siswa_id' => $siswa->id,
-            'nisn' => $validated['nisn'],
+
+
+        $siswa->update([
+            'nama' => $validated['nama'],
         ]);
+
+
+        if ($siswa->nisn) {
+            $siswa->nisn->update([
+                'nisn' => $validated['nisn'],
+            ]);
+        } else {
+
+            NISN::create([
+                'siswa_id' => $siswa->id,
+                'nisn' => $validated['nisn'],
+            ]);
+        }
+
+        return redirect('/nisns')->with('message', 'Siswa dan NISN berhasil diperbarui.');
     }
-
-    return redirect('/nisns')->with('message', 'Siswa dan NISN berhasil diperbarui.');
-}
 
 
 
