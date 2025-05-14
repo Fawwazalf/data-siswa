@@ -16,6 +16,6 @@ Schedule::call(function () {
     ]);
 })->everyMinute()->name('create_hobby');
 
-Schedule::call(function (){
+Schedule::call(function () {
     Artisan::call('migrate:fresh --seed');
 })->everyFiveMinutes()->name('migrate_fresh_seed');

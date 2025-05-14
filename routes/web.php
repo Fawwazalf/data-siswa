@@ -10,11 +10,14 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\UserController;
+use App\Jobs\ProcessTestMail;
+use App\Mail\TestMail;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +38,7 @@ Route::post('/forgot-password', function (Request $request) {
     $request->validate(['email' => 'required|email']);
 
     $status = Password::sendResetLink(
-        $request->only('email')
+        credentials: $request->only('email')
     );
 
     return $status === Password::ResetLinkSent
@@ -87,3 +90,15 @@ Route::get('/auth/{provider}', [SocialiteController::class, 'redirect'])->name('
 
 
 Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback']);
+
+Route::get('/send-test-mail', function () {
+
+    for ($i = 1; $i <= 10; $i++) {
+        $user = ['name' => 'user' . $i, 'email' => 'user' . $i . '@example.com', 'password' => 'password' . $i];
+        //     Mail::to($user['email'])->send(new TestMail($user));
+        sleep(2);
+        ProcessTestMail::dispatch($user);
+    }
+
+    return 'Email sent';
+})->name('send-test-mail');
