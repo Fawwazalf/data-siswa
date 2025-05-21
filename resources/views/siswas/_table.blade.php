@@ -39,13 +39,11 @@
                                         Hobby
                                     </th>
 
-                                    @can('update-siswa')
-                                        @can('delete-siswa')
-                                            <th scope="col" class="table-th">
-                                                Action
-                                            </th>
-                                        @endcan
-                                    @endcan
+                                    @canany(['update-siswa', 'delete-siswa'])
+                                        <th scope="col" class="table-th">
+                                            Action
+                                        </th>
+                                    @endcanany
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 bg-white dark:divide-slate-700 dark:bg-slate-800">
@@ -84,44 +82,48 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        @can('update-siswa')
-                                            @can('delete-siswa')
-                                                <td class="table-td">
-                                                    <div>
-                                                        <div class="relative">
-                                                            <div class="dropdown relative">
-                                                                <button class="block w-full text-center text-xl" type="button"
-                                                                    id="tableDropdownMenuButton{{ $siswa->id }}"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    <iconify-icon
-                                                                        icon="heroicons-outline:dots-vertical"></iconify-icon>
-                                                                </button>
-                                                                <ul
-                                                                    class="dropdown-menu absolute z-[2] float-left m-0 mt-1 hidden min-w-[120px] list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-sm text-slate-700 shadow dark:bg-slate-700 dark:text-white">
+                                        @canany(['update-siswa', 'delete-siswa'])
+                                            <td class="table-td">
+                                                <div>
+                                                    <div class="relative">
+                                                        <div class="dropdown relative">
+                                                            <button class="block w-full text-center text-xl" type="button"
+                                                                id="tableDropdownMenuButton{{ $siswa->id }}"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <iconify-icon
+                                                                    icon="heroicons-outline:dots-vertical"></iconify-icon>
+                                                            </button>
+                                                            <ul
+                                                                class="dropdown-menu absolute z-[2] float-left m-0 mt-1 hidden min-w-[120px] list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-sm text-slate-700 shadow dark:bg-slate-700 dark:text-white">
 
-                                                                    <li>
+                                                                <li>
+                                                                    @can('update-siswa')
                                                                         <a href="{{ route('siswas.edit', $siswa->id) }}"
                                                                             class="font-Inter block w-full px-4 py-2 text-left font-normal text-slate-600 hover:bg-slate-100 dark:text-white dark:hover:bg-slate-600 dark:hover:text-white">
                                                                             Edit</a>
-                                                                    </li>
-                                                                    <li>
+                                                                    @endcan
+                                                                </li>
+                                                                <li>
+                                                                    @can('delete-siswa')
                                                                         <form action="{{ route('siswas.destroy', $siswa->id) }}"
                                                                             method="POST">
                                                                             @csrf @method('DELETE')
+
                                                                             <button type="submit"
                                                                                 class="font-Inter block w-full px-4 py-2 text-left font-normal text-slate-600 hover:bg-slate-100 dark:text-white dark:hover:bg-slate-600 dark:hover:text-white"
                                                                                 onclick="return confirm('Are you sure?')">
                                                                                 Delete
                                                                             </button>
                                                                         </form>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                                                                    @endcan
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                     </div>
-                                                </td>
-                                            @endcan
-                                        @endcan
+                                                </div>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             </tbody>

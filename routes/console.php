@@ -13,9 +13,11 @@ Artisan::command('inspire', function () {
 Schedule::call(function () {
     DB::table('hobbies')->insert([
         'Hobby' => Lorem::word(),
+        'created_at' => now(),
+        'updated_at' => now()
     ]);
-})->everyMinute()->name('create_hobby');
+})->everyFifteenSeconds()->name('create_hobby');
 
 Schedule::call(function () {
     Artisan::call('migrate:fresh --seed');
-})->everyFiveMinutes()->name('migrate_fresh_seed');
+})->everyMinute()->name('migrate_fresh_seed');
