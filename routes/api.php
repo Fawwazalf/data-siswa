@@ -22,3 +22,8 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware('auth:api')->get('/me', function (Request $request) {
+    return response()->json([
+        'user' => $request->user()
+    ]);
+});

@@ -20,7 +20,7 @@ class SiswaController extends Controller
 
     public function show($id)
     {
-        $siswa = Siswa::with('hobbies')->findOrFail($id);
+        $siswa = Siswa::with('hobbies', 'nisn', 'phone_numbers')->findOrFail($id);
         return new SiswaResource(true, 'Detail Data Siswa', $siswa);
     }
 
