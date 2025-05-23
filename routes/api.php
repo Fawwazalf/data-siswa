@@ -21,4 +21,4 @@ Route::apiResource('/phone_numbers', controller: PhoneNumberController::class);
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout'])->name('logout');

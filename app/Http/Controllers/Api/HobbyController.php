@@ -8,11 +8,13 @@ use App\Models\Hobby;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
+use function Laravel\Prompts\note;
+
 class HobbyController extends Controller
 {
     public function index()
     {
-        $hobbies = Hobby::with('siswas')->paginate(10);
+        $hobbies = Hobby::with('siswas')->get()->sortBy('hobby');
         return new HobbyResource(true, 'List Data Hobbies', $hobbies);
     }
 
@@ -27,18 +29,19 @@ class HobbyController extends Controller
     {
         $validated = $request->validate([
             'hobby' => 'required|string|max:255',
-            'nama' => 'required|string|max:255',
+            'nama' => 'string|max:255',
         ]);
-
-        $siswa = Siswa::firstOrCreate([
-            'nama' => $validated['nama'],
-        ]);
-
         $hobby = Hobby::firstOrCreate([
             'hobby' => $validated['hobby'],
         ]);
 
-        $siswa->hobbies()->syncWithoutDetaching($hobby->id);
+        if (!empty($validated['nama'])) {
+            $siswa = Siswa::firstOrCreate([
+                'nama' => $validated['nama'],
+            ]);
+
+            $siswa->hobbies()->syncWithoutDetaching($hobby->id);
+        }
 
         return new HobbyResource(true, 'Siswa dan Hobby berhasil ditambahkan', $hobby->load('siswas'));
     }

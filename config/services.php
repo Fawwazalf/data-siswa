@@ -44,6 +44,8 @@ return [
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => env('GITHUB_REDIRECT'),
     ],
-
-
+    'passport' => [
+        'client_id' => env('PASSWORD_CLIENT_ID'),
+        'client_secret' => env('PASSWORD_CLIENT_SECRET'),
+    ],
 ];

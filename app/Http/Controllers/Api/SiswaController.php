@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SiswaResource;
 use App\Models\NISN;
+use App\Models\PhoneNumber;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class SiswaController extends Controller
 {
     public function index()
     {
-        $siswa = Siswa::with('hobbies')->paginate(10);
+        $siswa = Siswa::with('hobbies', 'nisn', 'phone_numbers')->get()->sortBy('nama');
         return new SiswaResource(true, 'List Data Siswas', $siswa);
     }
 
@@ -29,6 +30,10 @@ class SiswaController extends Controller
         $validated = $request->validate([
             'nama' => 'required|unique:siswas,nama|max:255',
             'nisn' => 'required|unique:nisns,nisn|max:255',
+            'phone_numbers' => 'nullable|array',
+            'phone_numbers.*' => 'nullable|string|max:20|distinct|unique:phone_numbers,phone_number',
+            'hobby_ids' => 'nullable|array',
+            'hobby_ids.*' => 'required|integer|distinct|exists:hobbies,id',
         ]);
 
 
@@ -42,7 +47,23 @@ class SiswaController extends Controller
             'nisn' => $validated['nisn'],
         ]);
 
-        return new SiswaResource(true, 'Siswa berhasil ditambahkan', $siswa->load('hobbies'));
+        if (!empty($validated['phone_numbers'])) {
+            foreach ($validated['phone_numbers'] as $phone) {
+                if (!empty($phone)) {
+                    PhoneNumber::create([
+                        'siswa_id' => $siswa->id,
+                        'phone_number' => $phone,
+                    ]);
+                }
+            }
+        }
+
+        if (!empty($validated['hobby_ids'])) {
+            $siswa->hobbies()->sync($validated['hobby_ids']);
+        }
+
+
+        return new SiswaResource(true, 'Siswa berhasil ditambahkan', $siswa->load('hobbies', 'nisn', 'phone_numbers'));
     }
 
     /**
